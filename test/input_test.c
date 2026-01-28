@@ -26,7 +26,7 @@ void test_movement_commands() {
     assert(machine_state_position_y() == 50.0);
     assert(machine_state_last_feed_rate() == 300.0);
 
-    printf("Movement commands passed.\n");
+    printf("[passed].\n");
 }
 
 // Test for engraving control commands (M03, M05)
@@ -41,7 +41,7 @@ void test_engraving_control_commands() {
     assert(parse_gcode_command("M05") == 0);
     assert(machine_state_spindle_on() == 0);
 
-    printf("Engraving control commands passed.\n");
+    printf("[passed].\n");
 }
 
 // Test for invalid inputs and error states
