@@ -50,14 +50,17 @@ void test_invalid_commands() {
 
     // Test unknown command
     assert(parse_gcode_command("G999") != 0);
+    printf("Expected: '%s', Actual: '%s'\n", "Unknown command", get_last_error());
     assert(strcmp(get_last_error(), "Unknown command") == 0);
 
-    // Test missing parameters
-    assert(parse_gcode_command("G01") != 0);  // Missing X and Y
+    // Test missing parameters (e.g., X or Y not provided)
+    assert(parse_gcode_command("G01") != 0);
+    printf("Expected: '%s', Actual: '%s'\n", "Missing parameters", get_last_error());
     assert(strcmp(get_last_error(), "Missing parameters") == 0);
 
     // Test invalid parameter format
     assert(parse_gcode_command("G01 Xabc Y20") != 0);
+    printf("Expected: '%s', Actual: '%s'\n", "Invalid parameter format", get_last_error());
     assert(strcmp(get_last_error(), "Invalid parameter format") == 0);
 
     printf("Invalid commands passed.\n");

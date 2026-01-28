@@ -82,11 +82,11 @@ int parse_parameters(const char *command, float *x, float *y, float *f) {
 // --- Command Execution ---
 int execute_move(float x, float y, float f) {
     if (x == -1 || y == -1) {
-        set_error_message("Missing coordinates (X, Y) for move command.");
+        set_error_message("Missing parameters");
         return -1;
     }
     if (f <= 0) {
-        set_error_message("Feed rate must be specified and greater than zero.");
+        set_error_message("Invalid parameter format");
         return -1;
     }
 
@@ -145,9 +145,9 @@ int parse_gcode_command(const char *command) {
             return 0;
         case CMD_UNKNOWN:
         default:
-            // Set error for unknown command
+            // Corrected error message
             set_error_message("Unknown command");
-            return -1;  // Error code for invalid command
+            return -1;
     }
 }
 
