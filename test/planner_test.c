@@ -241,7 +241,7 @@ void test_planner_block_zero_nominal_speed() {
     planner_block_t block;
     planner_block_init(&block);
     
-    // Zero nominal speed with non-zero entry/exit should be valid
+    // Zero nominal speed should be valid
     // (validation only checks if entry/exit exceed nominal when nominal > 0)
     block.entry_speed = 0.0f;
     block.nominal_speed = 0.0f;

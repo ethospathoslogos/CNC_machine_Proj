@@ -7,21 +7,8 @@ void planner_block_init(planner_block_t *block) {
         return;
     }
     
-    // Clear all memory
+    // Clear all memory to zero
     memset(block, 0, sizeof(planner_block_t));
-    
-    // Set default values
-    block->entry_speed = 0.0f;
-    block->nominal_speed = 0.0f;
-    block->exit_speed = 0.0f;
-    block->acceleration = 0.0f;
-    block->max_entry_speed = 0.0f;
-    block->millimeters = 0.0f;
-    block->direction_bits = 0;
-    block->step_event_count = 0;
-    block->recalculate_flag = 0;
-    block->nominal_length_flag = 0;
-    block->next = NULL;
 }
 
 // Validate that a planner block has all required information
