@@ -1,8 +1,9 @@
 /* protocol.c */
 
 #include "protocol.h"
-#include "kenematics.h"
+#include "kinematics.h"
 #include "hal.h"
+#include "grbl.h"
 #include <string.h>
 
 /* ---- internal types ---- */
