@@ -1,5 +1,0 @@
-/home/runner/work/CNC_machine_Proj/CNC_machine_Proj/_codeql_build_dir/CMakeFiles/hello.dir
-/home/runner/work/CNC_machine_Proj/CNC_machine_Proj/_codeql_build_dir/CMakeFiles/edit_cache.dir
-/home/runner/work/CNC_machine_Proj/CNC_machine_Proj/_codeql_build_dir/CMakeFiles/rebuild_cache.dir
-/home/runner/work/CNC_machine_Proj/CNC_machine_Proj/_codeql_build_dir/_deps/core-build/CMakeFiles/edit_cache.dir
-/home/runner/work/CNC_machine_Proj/CNC_machine_Proj/_codeql_build_dir/_deps/core-build/CMakeFiles/rebuild_cache.dir

@@ -3,6 +3,8 @@
 *.exe
 test/bin/
 test/build/
+_codeql_build_dir/
+lib/
 
 # IDE files
 .vscode/
