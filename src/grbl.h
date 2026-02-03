@@ -149,14 +149,14 @@
 #include "hal.h"
 #include "protocol.h"
 #include "kinematics.h"
+#include "gcode.h"
+#include "planner.h"
 
 #if GRBL_KINEMATICS_COREXY
   #include "kin_corexy.h"
 #endif
 
 /* Add more core modules as you create them:
- *  - gcode.h
- *  - planner.h
  *  - stepper.h
  *  - settings.h
  *  - report.h
