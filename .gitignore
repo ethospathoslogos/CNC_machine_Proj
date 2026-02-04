@@ -3,6 +3,8 @@
 *.exe
 test/bin/
 test/build/
+test/*_test
+!test/*_test.c
 _codeql_build_dir/
 lib/
 
