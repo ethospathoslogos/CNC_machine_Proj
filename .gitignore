@@ -5,6 +5,8 @@ test/bin/
 test/build/
 test/*_test
 !test/*_test.c
+examples/*
+!examples/*.c
 _codeql_build_dir/
 lib/
 
