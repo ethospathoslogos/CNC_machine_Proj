@@ -53,8 +53,6 @@ typedef enum {
 
 /* ----------------------------- System context structure ----------------------------- */
 
-/* ----------------------------- System context structure ----------------------------- */
-
 /* Global system context - contains all subsystem states */
 typedef struct {
     /* Current system state */

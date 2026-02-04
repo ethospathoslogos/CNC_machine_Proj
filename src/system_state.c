@@ -378,13 +378,13 @@ bool system_check_soft_limits(const system_context_t *sys, float x, float y, flo
     if (!sys || !sys->soft_limits_enabled) return true;
     
     /* Define soft limits (these would typically come from settings) */
-    const float X_MIN = 0.0f, X_MAX = 200.0f;
-    const float Y_MIN = 0.0f, Y_MAX = 200.0f;
-    const float Z_MIN = -50.0f, Z_MAX = 0.0f;
+    const float SOFT_LIMIT_X_MIN = 0.0f, SOFT_LIMIT_X_MAX = 200.0f;
+    const float SOFT_LIMIT_Y_MIN = 0.0f, SOFT_LIMIT_Y_MAX = 200.0f;
+    const float SOFT_LIMIT_Z_MIN = -50.0f, SOFT_LIMIT_Z_MAX = 0.0f;
     
-    if (x < X_MIN || x > X_MAX) return false;
-    if (y < Y_MIN || y > Y_MAX) return false;
-    if (z < Z_MIN || z > Z_MAX) return false;
+    if (x < SOFT_LIMIT_X_MIN || x > SOFT_LIMIT_X_MAX) return false;
+    if (y < SOFT_LIMIT_Y_MIN || y > SOFT_LIMIT_Y_MAX) return false;
+    if (z < SOFT_LIMIT_Z_MIN || z > SOFT_LIMIT_Z_MAX) return false;
     
     return true;
 }
