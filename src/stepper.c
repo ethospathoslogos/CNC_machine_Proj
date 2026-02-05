@@ -5,7 +5,24 @@
 #include <string.h>
 #include <math.h>
 
+/* Constants */
+#define DEFAULT_STEP_INTERVAL_US 1000  /* Default step interval: 1ms */
+
 /* Internal helper functions */
+
+/* Delay for a specified number of microseconds 
+ * Note: This implementation uses hal_delay_ms with rounding up to 1ms minimum
+ * For sub-millisecond precision, a platform-specific implementation would be needed
+ */
+static void delay_us(uint32_t us) {
+    if (us == 0) return;
+    
+    /* Convert to milliseconds, rounding up */
+    uint32_t ms = (us + 999) / 1000;
+    if (ms == 0) ms = 1;  /* Minimum 1ms delay */
+    
+    hal_delay_ms(ms);
+}
 
 /* Convert planner block to step counts using kinematics */
 static bool block_to_steps(const planner_block_t *block, 
@@ -144,7 +161,7 @@ bool stepper_load_block(stepper_context_t *ctx, planner_block_t *block) {
     set_directions(dir_bits);
     
     /* Wait for direction setup time */
-    hal_delay_ms(ctx->config.dir_setup_us / 1000 + 1);
+    delay_us(ctx->config.dir_setup_us);
     
     /* Calculate initial step interval from entry speed */
     /* Convert speed from mm/min to steps/s, then to interval in us */
@@ -154,10 +171,10 @@ bool stepper_load_block(stepper_context_t *ctx, planner_block_t *block) {
         if (steps_per_sec > 0.0f) {
             ctx->step_interval_us = (uint32_t)(1000000.0f / steps_per_sec);
         } else {
-            ctx->step_interval_us = 1000; /* Default 1ms interval */
+            ctx->step_interval_us = DEFAULT_STEP_INTERVAL_US;
         }
     } else {
-        ctx->step_interval_us = 1000; /* Default 1ms interval */
+        ctx->step_interval_us = DEFAULT_STEP_INTERVAL_US;
     }
     
     ctx->current_speed = block->entry_speed;
@@ -220,7 +237,7 @@ void stepper_update(stepper_context_t *ctx) {
                 }
                 
                 /* Wait for pulse duration */
-                hal_delay_ms(ctx->config.step_pulse_us / 1000 + 1);
+                delay_us(ctx->config.step_pulse_us);
                 
                 /* Clear step pulses */
                 clear_step_pulses();
