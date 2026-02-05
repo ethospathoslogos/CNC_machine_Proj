@@ -151,13 +151,13 @@
 #include "kinematics.h"
 #include "gcode.h"
 #include "planner.h"
+#include "stepper.h"
 
 #if GRBL_KINEMATICS_COREXY
   #include "kin_corexy.h"
 #endif
 
 /* Add more core modules as you create them:
- *  - stepper.h
  *  - settings.h
  *  - report.h
  */

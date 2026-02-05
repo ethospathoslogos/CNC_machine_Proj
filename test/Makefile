@@ -11,14 +11,16 @@ BIN_DIR = bin
 TEST_TARGET = $(BIN_DIR)/test_runner
 PLANNER_TEST_TARGET = $(BIN_DIR)/planner_test_runner
 GCODE_TEST_TARGET = $(BIN_DIR)/gcode_test_runner
+STEPPER_TEST_TARGET = $(BIN_DIR)/stepper_test_runner
 
 # Source / objects
 OBJS = $(BUILD_DIR)/parser.o $(BUILD_DIR)/input_test.o
 PLANNER_OBJS = $(BUILD_DIR)/planner.o $(BUILD_DIR)/planner_test.o
 GCODE_OBJS = $(BUILD_DIR)/gcode.o $(BUILD_DIR)/gcode_test.o
+STEPPER_OBJS = $(BUILD_DIR)/stepper.o $(BUILD_DIR)/planner.o $(BUILD_DIR)/stepper_test.o
 
 # Default target
-all: dirs $(TEST_TARGET) $(PLANNER_TEST_TARGET) $(GCODE_TEST_TARGET)
+all: dirs $(TEST_TARGET) $(PLANNER_TEST_TARGET) $(GCODE_TEST_TARGET) $(STEPPER_TEST_TARGET)
 
 # Link test runner  (THIS WAS MISSING)
 $(TEST_TARGET): $(OBJS)
@@ -32,6 +34,11 @@ $(PLANNER_TEST_TARGET): $(PLANNER_OBJS)
 
 # Link gcode test runner
 $(GCODE_TEST_TARGET): $(GCODE_OBJS)
+	@echo "Linking $@..."
+	$(CC) $(CFLAGS) -o $@ $^ -lm
+
+# Link stepper test runner
+$(STEPPER_TEST_TARGET): $(STEPPER_OBJS)
 	@echo "Linking $@..."
 	$(CC) $(CFLAGS) -o $@ $^ -lm
 
@@ -71,6 +78,18 @@ $(BUILD_DIR)/gcode_test.o: $(TEST_DIR)/gcode_test.c
 	@echo "Compiling $< -> $@..."
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Compile stepper source
+$(BUILD_DIR)/stepper.o: $(SRC_DIR)/stepper.c $(SRC_DIR)/stepper.h
+	@mkdir -p $(BUILD_DIR)
+	@echo "Compiling $< -> $@..."
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Compile stepper test source
+$(BUILD_DIR)/stepper_test.o: $(TEST_DIR)/stepper_test.c
+	@mkdir -p $(BUILD_DIR)
+	@echo "Compiling $< -> $@..."
+	$(CC) $(CFLAGS) -c $< -o $@
+
 # Ensure dirs exist
 dirs:
 	@mkdir -p $(BUILD_DIR)
@@ -89,5 +108,8 @@ run: all
 	@echo ""
 	@echo "Running gcode tests..."
 	./$(GCODE_TEST_TARGET)
+	@echo ""
+	@echo "Running stepper tests..."
+	./$(STEPPER_TEST_TARGET)
 
 .PHONY: all clean dirs run

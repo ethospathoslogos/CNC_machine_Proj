@@ -3,6 +3,7 @@
 *.exe
 test/bin/
 test/build/
+test/build_tmp/
 test/*_test
 !test/*_test.c
 examples/*
