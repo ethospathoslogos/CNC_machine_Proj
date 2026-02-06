@@ -1,39 +1,21 @@
-# Toolchain (can be overridden by driver project)
-CC ?= gcc
-AR ?= ar
+# ---- Toolchain prefix (GCC ARM Embedded) ----
+PREFIX ?= arm-none-eabi
 
-CFLAGS ?= -Wall -Wextra -std=c99 -g -Iinclude
-BUILD_DIR = build
-SRC_DIR   = src
-LIB_DIR   = lib
+# ---- Path to libopencm3 submodule ----
+LIBOPENCM3_DIR := lib/libopencm3
 
-LIB_NAME  = libgrblcore.a
+# ---- Build only STM32F4 family (covers STM32F446RE) ----
+LIBOPENCM3_TARGETS := stm32/f4
 
-# Source files
-SRCS = $(wildcard $(SRC_DIR)/*.c)
-OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
+.PHONY: all libopencm3 clean clean-libopencm3
 
-# Default target builds the core library
-all: dirs $(LIB_DIR)/$(LIB_NAME)
+all: libopencm3
 
-# Create static library from core objects
-$(LIB_DIR)/$(LIB_NAME): $(OBJS)
-	@echo "Archiving core library..."
-	$(AR) rcs $@ $^
+# Build only the requested family, not the whole world
+libopencm3:
+	$(MAKE) -C $(LIBOPENCM3_DIR) PREFIX=$(PREFIX) TARGETS='$(LIBOPENCM3_TARGETS)'
 
-# Compile core source into object files
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(dir $@)
-	@echo "Compiling core $<..."
-	$(CC) $(CFLAGS) -c $< -o $@
+clean-libopencm3:
+	$(MAKE) -C $(LIBOPENCM3_DIR) clean
 
-# Make required directories
-dirs:
-	@mkdir -p $(BUILD_DIR) $(LIB_DIR)
-
-# Clean only core build artifacts
-clean:
-	@echo "Cleaning core build..."
-	@rm -rf $(BUILD_DIR) $(LIB_DIR)
-
-.PHONY: all clean dirs
+clean: clean-libopencm3

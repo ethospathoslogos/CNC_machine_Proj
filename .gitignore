@@ -10,6 +10,7 @@ examples/*
 !examples/*.c
 _codeql_build_dir/
 lib/
+*ld
 
 # IDE files
 .vscode/
