@@ -1,16 +1,17 @@
 cmake_minimum_required(VERSION 3.14)
-project(hello_world C)
+project(grbl_core C)
 
-include(FetchContent)
+# --- Build the grbl static library from all src/ files ---
+file(GLOB GRBL_SOURCES src/*.c)
 
-FetchContent_Declare(
-    core
-    GIT_REPOSITORY https://github.com/ethospathoslogos/core.git
-    GIT_TAG        fe858f7
+add_library(grbl STATIC ${GRBL_SOURCES})
+
+target_include_directories(grbl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+# Install the library and headers so drivers can link against it
+install(TARGETS grbl
+    ARCHIVE DESTINATION lib
 )
-FetchContent_MakeAvailable(core)
-
-add_executable(hello main.c)
-
-# This is the key line:
-target_link_libraries(hello PRIVATE grbl)
+install(DIRECTORY src/ DESTINATION include/grbl
+    FILES_MATCHING PATTERN "*.h"
+)

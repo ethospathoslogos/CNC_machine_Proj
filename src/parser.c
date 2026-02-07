@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <ctype.h>
 
 // --- Constants ---
 #define MAX_ERROR_MESSAGE 256
@@ -31,14 +30,6 @@ static MachineState machineState = {0, 0, 0, 0};
 static char lastErrorMessage[MAX_ERROR_MESSAGE];
 
 // --- Utility Functions ---
-// Trim leading and trailing spaces from a string
-static void trim(char *str) {
-    char *end;
-    while (isspace((unsigned char)*str)) str++;
-    end = str + strlen(str) - 1;
-    while (end > str && isspace((unsigned char)*end)) end--;
-    *(end + 1) = 0;
-}
 
 // Store an error message (for testing purposes)
 static void set_error_message(const char *message) {

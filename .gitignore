@@ -1,6 +1,7 @@
 # Build artifacts
 *.o
 *.exe
+build/
 test/bin/
 test/build/
 test/build_tmp/
