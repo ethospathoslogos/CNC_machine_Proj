@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 project(grbl_core C)
 
 # --- Build the grbl static library from all src/ files ---
-file(GLOB GRBL_SOURCES src/*.c)
+file(GLOB GRBL_SOURCES CONFIGURE_DEPENDS src/*.c)
 
 add_library(grbl STATIC ${GRBL_SOURCES})
 
