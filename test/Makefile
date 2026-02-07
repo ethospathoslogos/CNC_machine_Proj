@@ -16,7 +16,7 @@ STEPPER_TEST_TARGET = $(BIN_DIR)/stepper_test_runner
 # Source / objects
 OBJS = $(BUILD_DIR)/parser.o $(BUILD_DIR)/input_test.o
 PLANNER_OBJS = $(BUILD_DIR)/planner.o $(BUILD_DIR)/planner_test.o
-GCODE_OBJS = $(BUILD_DIR)/gcode.o $(BUILD_DIR)/gcode_test.o
+GCODE_OBJS = $(BUILD_DIR)/gcode.o $(BUILD_DIR)/arc.o $(BUILD_DIR)/kinematics.o $(BUILD_DIR)/gcode_test.o
 STEPPER_OBJS = $(BUILD_DIR)/stepper.o $(BUILD_DIR)/planner.o $(BUILD_DIR)/stepper_test.o
 
 # Default target
@@ -68,6 +68,18 @@ $(BUILD_DIR)/planner_test.o: $(TEST_DIR)/planner_test.c
 
 # Compile gcode source
 $(BUILD_DIR)/gcode.o: $(SRC_DIR)/gcode.c $(SRC_DIR)/gcode.h
+	@mkdir -p $(BUILD_DIR)
+	@echo "Compiling $< -> $@..."
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Compile arc source
+$(BUILD_DIR)/arc.o: $(SRC_DIR)/arc.c $(SRC_DIR)/arc.h
+	@mkdir -p $(BUILD_DIR)
+	@echo "Compiling $< -> $@..."
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Compile kinematics source
+$(BUILD_DIR)/kinematics.o: $(SRC_DIR)/kinematics.c $(SRC_DIR)/kinematics.h
 	@mkdir -p $(BUILD_DIR)
 	@echo "Compiling $< -> $@..."
 	$(CC) $(CFLAGS) -c $< -o $@

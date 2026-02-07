@@ -7,9 +7,10 @@
  *  - Support 2D engraving (X, Y axes only)
  *
  * Supported commands:
- *  Motion: G00 (rapid), G01 (linear), G04 (dwell)
+ *  Motion: G00 (rapid), G01 (linear), G02 (arc CW), G03 (arc CCW), G04 (dwell)
  *  Feed modes: G94 (units per minute)
  *  Spindle: M03 (on CW), M04 (on CCW), M05 (off)
+ *  Program: M02 (program end), M30 (program end and rewind)
  *  Spindle speed: S parameter (RPM)
  *  Feedrate: F parameter (mm/min)
  *  Coordinates: G90 (absolute), G91 (relative)
@@ -31,6 +32,8 @@ extern "C" {
 typedef enum {
     GCODE_MOTION_RAPID = 0,      /* G00 - rapid positioning */
     GCODE_MOTION_LINEAR = 1,     /* G01 - linear interpolation */
+    GCODE_MOTION_ARC_CW = 2,    /* G02 - clockwise arc */
+    GCODE_MOTION_ARC_CCW = 3,   /* G03 - counter-clockwise arc */
     GCODE_MOTION_DWELL = 4,      /* G04 - dwell */
 } gcode_motion_mode_t;
 
@@ -80,6 +83,7 @@ typedef struct {
     /* Flags */
     bool feedrate_set;     /* true if F was ever specified */
     bool absolute_mode;    /* derived from coord_mode for convenience */
+    bool program_complete; /* true after M02/M30 - program has ended */
     
 } gcode_state_t;
 
@@ -87,17 +91,20 @@ typedef struct {
 typedef struct {
     /* Commanded values (NAN if not specified) */
     float x, y;            /* Target position or offset */
+    float i, j;            /* Arc center offsets (relative to current position) */
+    float r;               /* Arc radius (alternative to I/J) */
     float f;               /* Feedrate */
     float s;               /* Spindle speed */
     float p;               /* Dwell time (seconds) */
     
     /* Word flags (which words were present) */
     bool has_x, has_y;
+    bool has_i, has_j, has_r;
     bool has_f, has_s, has_p;
     
     /* Modal commands */
-    int g_code;            /* G-code number (0, 1, 4, 90, 91, 94, etc.) */
-    int m_code;            /* M-code number (3, 4, 5, etc.) */
+    int g_code;            /* G-code number (0, 1, 2, 3, 4, 90, 91, 94, etc.) */
+    int m_code;            /* M-code number (2, 3, 4, 5, 30, etc.) */
     
     bool has_g, has_m;
     
@@ -125,6 +132,7 @@ void gcode_get_position(const gcode_state_t *gc, float *out_x, float *out_y);
 float gcode_get_feedrate(const gcode_state_t *gc);
 float gcode_get_spindle_speed(const gcode_state_t *gc);
 gcode_spindle_state_t gcode_get_spindle_state(const gcode_state_t *gc);
+bool gcode_is_program_complete(const gcode_state_t *gc);
 
 /* Get error message for a status code */
 const char *gcode_status_string(gcode_status_t status);
