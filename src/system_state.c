@@ -25,7 +25,13 @@ static void on_line_received(const char *line, void *user) {
         
         if (gcode_st == GCODE_OK) {
             sys->total_lines_processed++;
-            if (sys->state == SYS_STATE_IDLE) {
+            
+            /* Check if program has ended (M02/M30) */
+            if (gcode_is_program_complete(&sys->gcode)) {
+                sys->state = SYS_STATE_IDLE;
+                /* Sync machine position from gcode state */
+                gcode_get_position(&sys->gcode, &sys->machine_x, &sys->machine_y);
+            } else if (sys->state == SYS_STATE_IDLE) {
                 sys->state = SYS_STATE_RUNNING;
             }
         } else {
